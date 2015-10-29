@@ -23,7 +23,9 @@ __maintainer__ = "Stefan Kasberger"
 __email__ = "mail@stefankasberger.at"
 __status__ = "Prototype" # 'Development', 'Production' or 'Prototype'
 
+
 ###    GLOBAL   ###
+
 
 ROOT_FOLDER = os.path.dirname(os.getcwd()) # sets root folder to one directory up
 FOLDER_RAW_HTML = ROOT_FOLDER + '/data/raw/html/'
@@ -47,7 +49,9 @@ IMPORT_COUNTRIES = []
 EXPORT_COUNTRIES = []
 IMPORT_COUNTRY_STASH = ''
 
+
 ###    FUNCTIONS   ###
+
 
 def SetupEnvironment():
 	"""Sets up the folder structure and working environment.
@@ -392,7 +396,7 @@ def Save4Network(data, year):
 	"""
 
 	# SAVE EDGES CSV
-	string = '"unique id", "importCountry", "exportCountry", "category", "num-licenses", "val-licenses", "val-arms", "total-eu-licenses-refusals", "criteria-numbers"\n'
+	string = '"unique id", "Source", "Target", "category", "num-licenses", "val-licenses", "val-arms", "total-eu-licenses-refusals", "criteria-numbers"\n'
 	primaryKey = 1
 
 	# run over all importing countries
@@ -404,7 +408,7 @@ def Save4Network(data, year):
 				# run over all CML's + Total
 				for elem in data[importCountry][exportCountry].keys():
 					
-					string += str(primaryKey)+', "'+importCountry+'", "'+exportCountry+'", "'+elem+'"'
+					string += str(primaryKey)+', "'+exportCountry+'", "'+importCountry+'", "'+elem+'"'
 
 					# check which keys are available and write their values or empty string into the CSV string
 					for armType in ARMS_TYPE_LIST:
@@ -436,6 +440,7 @@ def Save4Network(data, year):
 					else:	
 						string += ', '
 		string += '\n'
+		primaryKey += 1
 	# save string to file
 	Save2File(string, FOLDER_CSV+ts+'_'+FILENAME_BASE+'_'+year+'_nodes.csv')
 
@@ -511,7 +516,10 @@ def SaveCountry(data, country):
 	# save string to file
 	Save2File(string, FOLDER_CSV+country+'/'+ts+'_'+FILENAME_BASE+'_imports.csv')
 
-# MAIN
+
+###    MAIN   ###
+
+
 if __name__ == "__main__":
 
 	DOWNLOAD_FILES = False
