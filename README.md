@@ -1,6 +1,6 @@
 EU arms exports scraper
 ==============================
-The scraper extracts information from the EU arms export reports between 2005 and 2013, which is for machine very hard to read. The auomatically extracted information is then stored in different data structures (network, country specific) and file formats (CSV, JSON), which are relevant for further steps, like network analysis, visualization and statistical analysis. 
+The scraper extracts information from the EU arms export reports between 2005 and 2013, which is very hard to read for machines. The automatically extracted information is then stored in different data structures (network, country specific) and file formats (CSV, JSON), which are relevant for the next steps, like network analysis, visualization and statistical analysis. 
 
 - Team: Gute Taten für gute Daten Project (Open Knowledge Austria)
 - Status: Prototype
@@ -15,7 +15,7 @@ The scraper extracts information from the EU arms export reports between 2005 an
 
 **Function**
 
-The scraper fetches the html passed in as url's from a csv file and stores them locally. The html then will be parsed with BeautifulSoup4. Every table between the passed start country and end country will be parse out row by row, cell by cell and stored into a JSON structure with importing countries -> exporting countries -> arms classe -> data. The data structure then will be used to create nodes and edges files as JSON and CSV. This can also be used to extract country specific data to understand imports and exports from a country perspective.
+The scraper fetches the html passed in as urls from a csv file and stores them locally. The html is then parsed with BeautifulSoup4. Every table between the requested start country and end country is parsed out row by row, cell by cell and stored into a JSON structure with importing countries -> exporting countries -> arms classes -> data. The data structure is then  used to create nodes and edges files as JSON and CSV. This can also be used to extract country specific data to understand imports and exports from a country's perspective.
 
 **Run scraper**
 
@@ -25,10 +25,10 @@ python eu-arms.py
 ```
 
 ## Used Data
-The EU publishes their annual arms exports reports as HTML tables in the web. We have found so far the reports from 2005 to 2013, which we built scraper for. 
+The EU publishes their annual arms exports reports as HTML tables in the web. We have so far found the reports from 2005 to 2013, which we built this scraper for. 
 
 ### The Table
-The tables are the basic matrix with the data available. The all look the same: on the left you see the exporting countries Austria and Spain and on the top the importing country Afghanistaion, which the table is for. e. g. Austria applied for 3 licenses to Afghanistaion in CML 1, which most likely were some Glocks.
+The tables are the basic matrix with the data available. They all look the same: on the left you see the exporting countries Austria and Spain and on the top the importing country Afghanistan, which the table is for. e. g. Austria applied for 3 licenses to Afghanistan in CML 1, which most likely were some Glocks.
 
                    Afghanistan  		     
 |	  |    | ML1	| ML12	| ML20     | Total   |
