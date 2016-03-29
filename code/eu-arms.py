@@ -18,7 +18,7 @@ import csv
 __author__ = "Stefan Kasberger"
 __copyright__ = "Copyright 2015"
 __license__ = "MIT"
-__version__ = "0.0.1"
+__version__ = "0.1"
 __maintainer__ = "Stefan Kasberger"
 __email__ = "mail@stefankasberger.at"
 __status__ = "Prototype" # 'Development', 'Production' or 'Prototype'
@@ -134,7 +134,7 @@ def ReadText(filename):
 		filename: name of the file
 	
 	Returns:
-		text from the file.
+		text: content of file as string
 	"""
 	f = open(filename, 'r')
 	text = f.read()
@@ -397,6 +397,12 @@ def Save4Network(data, year):
 
 	# SAVE EDGES CSV
 	string = '"unique id", "Source", "Target", "category", "num-licenses", "val-licenses", "val-arms", "total-eu-licenses-refusals", "criteria-numbers"\n'
+	# string = '"unique id", "exporting-country", "importing-country", "category", "num-licenses", "val-licenses", "val-arms", "total-eu-licenses-refusals", "criteria-numbers"\n'
+	# strNetworkX = ''
+	# strCountry = ''
+	# strGephiCountry = ''
+	# strNetworkXCountry = ''
+
 	primaryKey = 1
 
 	# run over all importing countries
@@ -529,13 +535,13 @@ if __name__ == "__main__":
 
 	# setup
 	reports = {}
+	euArms = {}
+	SetupEnvironment()
+
 	startTime = datetime.now()
 	# ts = startTime.strftime('%Y-%m-%d-%H-%M')
 	ts = '2015-10-28-14-59'
 	print 'start:',ts
-
-	euArms = {}
-	SetupEnvironment()
 
 	# read out reports.csv
 	with open(REPORTS_CSV, 'r') as csvfile:

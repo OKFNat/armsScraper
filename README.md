@@ -4,16 +4,16 @@ The scraper extracts information from the EU arms export reports between 2005 an
 
 - Team: Gute Taten für gute Daten Project (Open Knowledge Austria)
 - Status: Prototype
-- Language Documentation: English
-- [MIT License](http://opensource.org/licenses/MIT)
-- [Gute Taten für gute Daten project](http://okfn.at/gutedaten/) 
+- Documentation: English
+- License: [MIT License](http://opensource.org/licenses/MIT)
+- Website: [Gute Taten für gute Daten project](http://okfn.at/gutedaten/) 
 
 **Used Software**
 - [iPython](http://ipython.org/) with [BeautifulSoup4](http://www.crummy.com/software/BeautifulSoup/)
 
 ## SCRAPER
 
-**Function**
+**Description**
 
 The scraper fetches the html passed in as urls from a csv file and stores them locally. The html is then parsed with BeautifulSoup4. Every table between the requested start country and end country is parsed out row by row, cell by cell and stored into a JSON structure with importing countries -> exporting countries -> arms classes -> data. The data structure is then  used to create nodes and edges files as JSON and CSV. This can also be used to extract country specific data to understand imports and exports from a country's perspective.
 
@@ -30,7 +30,7 @@ The EU publishes their annual arms exports reports as HTML tables in the web. We
 ### The Table
 The tables are the basic matrix with the data available. They all look the same: on the left you see the exporting countries Austria and Spain and on the top the importing country Afghanistan, which the table is for. e. g. Austria applied for 3 licenses to Afghanistan in CML 1, which most likely were some Glocks.
 
-                   Afghanistan  		     
+Afghanistan
 |	  |    | ML1	| ML12	| ML20     | Total   |
 |---------|----|--------|-------|----------|---------|
 | Austria | a  | 3      | 	|          |         |
@@ -77,7 +77,7 @@ The second row is an [EU specific classificationi of arms](EU Common Military Li
 - (d) = total EU number of licence refusals (small discrepancies may appear between breakdowns and totals due to denials concerning more than one ML item or denials for items other than those appearing in the ML) (scraper data model => total-eu-licenses-refusals)
 - (e) = criteria numbers on which refusals are based (the approximate number of times each criterion is invoked is indicated in brackets) (scraper data model => criteria-numbers)
 
-**corrections in raw html**
+**Corrections in raw html**
 
 In some HTML tables were errors, which were corrected manually after downloading the html files.
 
@@ -152,7 +152,7 @@ No errors.
 **raw data correction**
 - Switzerland: In second table span around country name is missing => ```<span class="bold">SWITZERLAND</span>```
 
-## Created Data
+## CREATED DATA
 - [data-model.md](data-model.md): Describes the data structure used and created
 
 ## STRUCTURE
@@ -181,8 +181,12 @@ No errors.
 - add country namecodes for easier enrichment with other data
 - visualize on a map the flows of arms and centrality of countries
 
+## OUTREACH
+- [derstandard.at: Wie viele Waffen Österreich an Saudi-Arabien lieferte](http://derstandard.at/2000029272616/Wie-viele-Waffen-Oesterreich-nach-Saudi-Arabien-lieferte)
+- [NZZ.at: Der Arabische Frühling und die europäischen Waffenbauer](https://nzz.at/republik/der-arabische-fruehling-und-die-europaeischen-waffenbauer)
+
 ## CHANGELOG
-### Version 0.0.1 - 2015-10-29
+### Version 0.1 - 2015-10-29
 **init repo**
 - parse reports 2005 and 2008-2013
 - parse html tables
