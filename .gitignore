@@ -1,0 +1,6 @@
+*.sublime-*
+notes.md
+/docs
+/data
+/eu-arms-export-data
+/uk-arms-export-data

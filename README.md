@@ -1,15 +1,19 @@
-EU arms exports scraper
+EU Arms Exports Scraper
 ==============================
 The scraper extracts information from the EU arms export reports between 2005 and 2013, which is very hard to read for machines. The automatically extracted information is then stored in different data structures (network, country specific) and file formats (CSV, JSON), which are relevant for the next steps, like network analysis, visualization and statistical analysis. 
 
-- Team: Gute Taten für gute Daten Project (Open Knowledge Austria)
-- Status: Prototype
+This repository provides the code and documentation, and [keeps track of bugs as well as feature requests](https://github.com/OKFNat/armScraper/issues).
+
+- Team: [Gute Taten für gute Daten](http://okfn.at/gutedaten/) project of [Open Knowledge Austria](http://okfn.at/).
+- Status: Production
 - Documentation: English
-- License: [MIT License](http://opensource.org/licenses/MIT)
-- Website: [Gute Taten für gute Daten project](http://okfn.at/gutedaten/) 
+- License:
+	- Content: [Creative Commons Attribution 4.0](http://creativecommons.org/licenses/by/4.0/)
+	- Software: [MIT License](http://opensource.org/licenses/MIT) 
 
 **Used Software**
-- [iPython](http://ipython.org/) with [BeautifulSoup4](http://www.crummy.com/software/BeautifulSoup/)
+
+The sourcecode is written in Python 2. It was created with use of [iPython](http://ipython.org/), [BeautifulSoup4](http://www.crummy.com/software/BeautifulSoup/) and [urllib2](https://docs.python.org/2/library/urllib2.html).
 
 ## SCRAPER
 
@@ -21,14 +25,60 @@ The scraper fetches the html passed in as urls from a csv file and stores them l
 
 ```
 cd code
-python eu-arms.py
+python arms-scraper.py
 ```
 
-## Used Data
+### How the scraper works
+**Configure the Scraper**
+
+There are two global variables in [arms-scraper.py](code/arms-scraper.py) you may want to change to your needs.
+
+- DELAY_TIME: To not overload the server or may get blocked because of too many request, you should set the delay time to fetch to 1-5 seconds, not less.
+- TS: The timestamp as a string can be set to the last download. So you can use downloaded data over and over again and must not do it everytime. When you do it first time, you can set the value to ```datetime.now().strftime('%Y-%m-%d-%H-%M')```, so it is the timestamp when the scraper starts.
+
+**Download raw html**
+
+Here all the html raw data gets downloaded, stored locally and the basic data gets parsed.
+
+- Download the overview page with the tables (html). For this, the [data/raw/csv/list-eu-armsexports-reports.csv](data/raw/csv/list-eu-armsexports-reports.csv) spreadshit is needed. It's data structure of is needed for the scraper to know where to start from and what to extract.
+	- year: year of the arms export report
+	- report-number: number of the arms export report
+	- url: url, where the arms export is located
+	- div-id: ID of the div, where the tables are in.
+	- start-country: first country to extract.
+	- end-country: last country to extract.
+- Open the downloaded file.
+- Parse out the basic information about each lobbying register entry from the overview table. This is necessary here, because the download of the lobbying register entry page needs the link from the Registerzahl field.
+- Store the parsed data as JSON file.
+- Download all lobbying register entry pages (html) with the unique id as postfix.
+
+**Parse html**
+
+Here the description of the project gets added to the data.
+
+- Open the overview page.
+- Parse out the basic information about each lobbying register entry from the overview table. This is necessary here, because the download of the lobbying register entry page needs the link from the Registerzahl field.
+- Open all lobbying register entry pages (html).
+- Parse out the additional information from all lobbying register pages.
+- Store updated data as JSON file.
+
+The lobbying register does not publish the A2 entries, so the scraper never got tested with this and some A2 specific data entries are not part of the parser.
+
+**Export CSV**
+
+Here the data gets exported as a CSV file.
+- Open the data (JSON).
+- Save the serialized data as CSV file.
+
+## DATA INPUT
 The EU publishes their annual arms exports reports as HTML tables in the web. We have so far found the reports from 2005 to 2013, which we built this scraper for. 
+
+**Important: The data on the website has changed during our work, so the links to the annual arms export reports we used do not work anymore.**
 
 ### The Table
 The tables are the basic matrix with the data available. They all look the same: on the left you see the exporting countries Austria and Spain and on the top the importing country Afghanistan, which the table is for. e. g. Austria applied for 3 licenses to Afghanistan in CML 1, which most likely were some Glocks.
+
+**Example**
 
 Afghanistan
 |	  |    | ML1	| ML12	| ML20     | Total   |
@@ -45,7 +95,8 @@ Afghanistan
 
 **EU Common Military List categories**
 
-The second row is an [EU specific classificationi of arms](EU Common Military List categories).
+The second row is an [EU specific classificationi of arms](http://www.bafa.de/bafa/en/export_control/eu-outreach/publications/information_on_programmes/coarm_celex_52014XG0409_01_en.pdf) (EU Common Military List categories).
+
 - ML1: Smooth-bore weapons with a calibre of less than 20 mm, other arms and automatic weapons with a calibre of 12,7 mm (calibre 0,50 inches) or less and accessories, and specially designed components therefor.
 - ML2: Smooth-bore weapons with a calibre of 20 mm or more, other weapons or armament with a calibre greater than 12,7 mm (calibre 0,50 inches), projectors and accessories, and specially designed components therefor.
 - ML3: Ammunition and fuze setting devices, and specially designed components therefor.
@@ -79,11 +130,13 @@ The second row is an [EU specific classificationi of arms](EU Common Military Li
 
 **Corrections in raw html**
 
-In some HTML tables were errors, which were corrected manually after downloading the html files.
+In some HTML tables were errors, which were corrected manually after downloading the html files cause it was easier than coding a proper function in the scraper.
 
 ### Soundness
 - "Statistics are compiled differently by each Member State: no uniform standard is used. Consequently, owing to current procedures regarding arms export reporting or data protection legislation, not all countries have been able to submit the same information (3):"
 - "With regard to actual exports authorised by EU Member States (row (c)), it is important to note that Belgium, Denmark, Germany, Poland, Greece, Ireland and the United Kingdom could not provide these data while France and Italy have reported total values only. No aggregation is therefore reported at the EU level."
+
+For more corrections of data, look at the specific reports below.
 
 ### 16th Report - 2013  
 [Original HTML](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52015XG0327(05)&rid=1)
@@ -152,15 +205,146 @@ No errors.
 **raw data correction**
 - Switzerland: In second table span around country name is missing => ```<span class="bold">SWITZERLAND</span>```
 
-## CREATED DATA
-- [data-model.md](data-model.md): Describes the data structure used and created
+## DATA OUTPUT
 
-## STRUCTURE
+**raw html**
+
+```
+<html>
+  <head>
+  <body>
+    .
+    <div id="C_2015103EN.01000601">
+      . 
+      <p id="d1e590-6-1-table" class="ti-tbl">		=> header for table
+      <table class="table">				=> table
+		<colgroup>
+		<tbody>
+		  <tr class="table">				=> row
+		    <td class="table">
+		      <p class="tbl-txt">				=> cell
+		    <td class="table">
+		  .
+		  <tr class="table">
+		    <td class="table">
+		      <p class="tbl-txt">
+		    <td class="table">
+	      <p>
+	      .
+	      <p id="d1e1391-6-1-table" class="ti-tbl">
+	      <table class="table">
+	      <table class="table">				=> table
+		<colgroup>
+		<tbody>
+		  <tr class="table">				=> row
+		    <td class="table">
+		      <p class="tbl-txt">				=> cell
+		    <td class="table">
+		  .
+		  <tr class="table">
+		    <td class="table">
+		      <p class="tbl-txt">
+		    <td class="table">
+	      <p>
+	</div>
+  </body>
+  </head>
+</html>
+```
+
+Because each html report has additional tables in after the ones we want, we have to define a stop country in the [data/raw/csv/list-eu-armsexports-reports.csv](data/raw/csv/list-eu-armsexports-reports.csv)
+
+**arms exports data as JSON**
+```
+{
+	"YEAR" (string) {
+		<COUNTRY-DESTINATION> (string) {
+			"Total": {
+				"num-licenses": int
+				"val-licenses": int
+				"val-arms": int
+				"total-eu-licenses-refusals": int
+				"criteria-numbers": int
+			}
+			"CML1": {
+				"num-licenses": int
+				"val-licenses": int
+				"val-arms": int
+				"total-eu-licenses-refusals": int
+				"criteria-numbers": int
+			}
+			.
+			"CML22": {
+				"num-licenses": int
+				"val-licenses": int
+				"val-arms": int
+				"total-eu-licenses-refusals": int
+				"criteria-numbers": int
+			}
+			<COUNTRY-ORIGIN> (string) {
+				"Total": {
+					"num-licenses": int
+					"val-licenses": int
+					"val-arms": int
+					"total-eu-licenses-refusals": int
+					"criteria-numbers": int
+				}
+				"CML1": {
+					"num-licenses": int
+					"val-licenses": int
+					"val-arms": int
+					"total-eu-licenses-refusals": int
+					"criteria-numbers": int
+				}
+				.
+				"CML22": {
+					"num-licenses": int
+					"val-licenses": int
+					"val-arms": int
+					"total-eu-licenses-refusals": int
+					"criteria-numbers": int
+				}
+			}
+		}
+	}
+}
+```
+
+**arms export data as CSV**
+- unique-id
+- year
+- importing-country
+- exporting-country
+- CML-category
+- num-licenses-imported
+- val-licenses-imported
+- val-arms-imported
+- total-eu-licenses-refusals-imported
+- criteria-numbers-imported
+
+Each row is one export in one year.
+
+## SOURCES
+
+**Documentation**
+
+**Other datasources**
+- [SIPRI](http://www.sipri.org/databases)
+- [Armed Conflict Location & Event Data Project](http://www.acleddata.com/)
+- [Uppsala Conflict Data Programm](http://www.pcr.uu.se/research/ucdp/datasets/)
+
+**Media coverage**
+- [derstandard.at: Wie viele Waffen Österreich an Saudi-Arabien lieferte](http://derstandard.at/2000029272616/Wie-viele-Waffen-Oesterreich-nach-Saudi-Arabien-lieferte)
+- [NZZ.at: Der Arabische Frühling und die europäischen Waffenbauer](https://nzz.at/republik/der-arabische-fruehling-und-die-europaeischen-waffenbauer)
+
+## REPOSITORY
 - [README.md](README.md): Overview of repository
-- [data-model.md](data-model.md): Describes the data structure used and created
+- [code/arms-scraper.py](code/arms-scraper.py): scraper
+- [CHANGELOG.md](CHANGELOG.md)
+- [LICENSE](LICENSE)
 
 ## TODO
-**must**
+**important**
 - verify the data: check in each report
 	- check country with two tables
 	- check country name with two words
@@ -173,6 +357,7 @@ No errors.
 - update code to Python3
 - csv files for network analysis with all years in it
 - compare total values with sum of single values
+- update CSV export function: write it more generic, so it creates header row out of dict-keys and adds fitting values as rows below with seperator in between.
 
 **new features**
 - analyze and visualize the data: networkX, maps, Gephi
@@ -181,16 +366,10 @@ No errors.
 - add country namecodes for easier enrichment with other data
 - visualize on a map the flows of arms and centrality of countries
 
-## OUTREACH
-- [derstandard.at: Wie viele Waffen Österreich an Saudi-Arabien lieferte](http://derstandard.at/2000029272616/Wie-viele-Waffen-Oesterreich-nach-Saudi-Arabien-lieferte)
-- [NZZ.at: Der Arabische Frühling und die europäischen Waffenbauer](https://nzz.at/republik/der-arabische-fruehling-und-die-europaeischen-waffenbauer)
-
 ## CHANGELOG
-### Version 0.1 - 2015-10-29
-**init repo**
-- parse reports 2005 and 2008-2013
-- parse html tables
-- save reports in one json and one for each year with lists of importing and exporting countries 
-- save reports in nodes and edges csv for each year
-- save country specific data for imports and exports in csv files
-
+### Version 0.2 - 2016-04-26
+- update documentation
+- add 2006 and 2007 scraper
+- update CSV export
+- implement data model in readme
+- add license, changelog and .gitignore
