@@ -324,6 +324,40 @@ Because each html report has additional tables in after the ones we want, we hav
 
 Each row is one export in one year.
 
+## CONTRIBUTION
+
+In the spirit of free software, everyone is encouraged to help improve this project.
+
+Here are some ways you can contribute:
+
+- by reporting bugs
+- by suggesting new features
+- by translating to a new language
+- by writing or editing documentation
+- by analyzing the data
+- by visualizing the data
+- by writing code (**no pull request is too small**: fix typos in the user interface, add code comments, clean up inconsistent whitespace)
+- by refactoring code
+- by closing issues
+- by reviewing pull requests
+- by enriching the data with other data sources
+
+When you are ready, submit a [pull request](https://github.com/OKFNat/armScraper/pulls).
+
+### Submitting an Issue
+
+We use the [GitHub issue tracker](https://github.com/OKFNat/armScraper/issues) to track bugs and features. Before submitting a bug report or feature request, check to make sure it hasn't already been submitted. When submitting a bug report, please try to provide a screenshot that demonstrates the problem. 
+
+## COPYRIGHT
+All content is openly licensed under the [Creative Commons Attribution 4.0](http://creativecommons.org/licenses/by/4.0/) license, unless otherwisely stated.
+
+All sourcecode is free software: you can redistribute it and/or modify it under the terms of the MIT License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Visit [http://opensource.org/licenses/MIT](http://opensource.org/licenses/MIT) to learn more about the MIT License.
+
+
 ## SOURCES
 
 **Arms Exports**
@@ -333,6 +367,7 @@ Each row is one export in one year.
 - [The Review of the EU common position on arms exports: prospects for strenghtened controls](http://www.sipri.org/research/disarmament/eu-consortium/publications/publications/non-proliferation-paper-7): SIPRI, 2012
 - [The Limitations of European Union Reports on Arms Exports: The Case of Central Asia](http://www.nonproliferation.eu/web/documents/other/paulholtomandmarkbromley4e9eaf8345077.pdf): SIPRI, 2010.
 - [The European Union Code of Conduct on Arms Exports: Improving the Annual Report](http://books.sipri.org/files/PP/SIPRIPP08.pdf): Sibylle Bauer and Mark Bromley - SIPRI, 2004.
+- [EU Annual Report](http://www.sipri.org/research/armaments/transfers/transparency/EU_reports): SIPRI page.
 
 **Documentation**
 - [Common military list of the European Union (pdf)](http://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ%3AC%3A2014%3A107%3AFULL)
