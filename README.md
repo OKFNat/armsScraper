@@ -95,7 +95,7 @@ The tables are the basic matrix with the data available. They all look the same:
 
 **EU Common Military List categories**
 
-The second row is an [EU specific classificationi of arms](http://www.bafa.de/bafa/en/export_control/eu-outreach/publications/information_on_programmes/coarm_celex_52014XG0409_01_en.pdf) (EU Common Military List categories).
+The second row is an EU specific classification of arms, the [EU Common Military List categories]](http://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ%3AC%3A2014%3A107%3AFULL).
 
 - ML1: Smooth-bore weapons with a calibre of less than 20 mm, other arms and automatic weapons with a calibre of 12,7 mm (calibre 0,50 inches) or less and accessories, and specially designed components therefor.
 - ML2: Smooth-bore weapons with a calibre of 20 mm or more, other weapons or armament with a calibre greater than 12,7 mm (calibre 0,50 inches), projectors and accessories, and specially designed components therefor.
@@ -326,7 +326,18 @@ Each row is one export in one year.
 
 ## SOURCES
 
+**Arms Exports**
+- [SIPRI](http://sipri.org/): Stockholm International Peace Research Institute
+- [Department of Peace and Conflict Research, Uppsala University](http://www.pcr.uu.se/)
+- [Small Arms Survey](http://www.smallarmssurvey.org/)
+- [The Review of the EU common position on arms exports: prospects for strenghtened controls](http://www.sipri.org/research/disarmament/eu-consortium/publications/publications/non-proliferation-paper-7): SIPRI, 2012
+- [The Limitations of European Union Reports on Arms Exports: The Case of Central Asia](http://www.nonproliferation.eu/web/documents/other/paulholtomandmarkbromley4e9eaf8345077.pdf): SIPRI, 2010.
+- [The European Union Code of Conduct on Arms Exports: Improving the Annual Report](http://books.sipri.org/files/PP/SIPRIPP08.pdf): Sibylle Bauer and Mark Bromley - SIPRI, 2004.
+
 **Documentation**
+- [Common military list of the European Union (pdf)](http://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ%3AC%3A2014%3A107%3AFULL)
+- [The European Union Code of Conduct on Arms Exports](http://www.consilium.europa.eu/uedocs/cmsUpload/08675r2en8.pdf)
+- [European Union External Action: Arms Export Control](http://www.eeas.europa.eu/non-proliferation-and-disarmament/arms-export-control/index_en.htm)
 
 **Other datasources**
 - [SIPRI](http://www.sipri.org/databases)
@@ -342,29 +353,6 @@ Each row is one export in one year.
 - [code/arms-scraper.py](code/arms-scraper.py): scraper
 - [CHANGELOG.md](CHANGELOG.md)
 - [LICENSE](LICENSE)
-
-## TODO
-**important**
-- verify the data: check in each report
-	- check country with two tables
-	- check country name with two words
-	- check first and last table
-	- check 3 tables in depth
-	- check with different country name structure: before table, first row, second row
-- check files for network analyses with Gephi or networkX python module
-
-**optional**
-- update code to Python3
-- csv files for network analysis with all years in it
-- compare total values with sum of single values
-- update CSV export function: write it more generic, so it creates header row out of dict-keys and adds fitting values as rows below with seperator in between.
-
-**new features**
-- analyze and visualize the data: networkX, maps, Gephi
-- parse aggregated tables and compare with data from country level
-- combine with data from SIPRI
-- add country namecodes for easier enrichment with other data
-- visualize on a map the flows of arms and centrality of countries
 
 ## CHANGELOG
 ### Version 0.2 - 2016-04-26
