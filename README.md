@@ -80,16 +80,16 @@ The tables are the basic matrix with the data available. They all look the same:
 
 **Example**
 
-Afghanistan
+                   Afghanistan  		     
 |	  |    | ML1	| ML12	| ML20     | Total   |
-|---------|----|--------|-------|----------|---------|
-| Austria | a  | 3      | 	|          |         |
+|-----|----|--------|-------|----------|---------|
+| Austria | a | 3      | 	|          |         |
 | 	  | b  | 13367  | 	|          |         |
 | 	  | c  | 	| 	|          |         |
-| Spain	  | a  | 	| 1	| 15       | 16	     |
+| Spain	  | a | 	| 1	| 15       | 16	     |
 | 	  | b  | 	| 38723 | 6977138  | 7015861 |
 | 	  | c  | 	| 	|          | 	     |
-| Total	  | a  | 3	| 1	| 15       | 19	     |
+| Total	  | a | 3	| 1	| 15       | 19	     |
 | 	  | b  | 13367	| 38723	| 6977138  | 7029228 |
 | 	  | c  | 	| 	|   	   |   	     |
 
