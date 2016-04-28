@@ -4,6 +4,8 @@ The scraper extracts information from the EU arms export reports between 2005 an
 
 This repository provides the code and documentation, and [keeps track of bugs as well as feature requests](https://github.com/OKFNat/armScraper/issues).
 
+- [Data Source]()
+- [Extracted Data](https://github.com/OKFNat/data/tree/master/waffenexporte)
 - Team: [Gute Taten für gute Daten](http://okfn.at/gutedaten/) project of [Open Knowledge Austria](http://okfn.at/).
 - Status: Production
 - Documentation: English
@@ -73,8 +75,6 @@ Here the data gets exported as a CSV file.
 ## DATA INPUT
 The EU publishes their annual arms exports reports as HTML tables in the web. We have so far found the reports from 2005 to 2013, which we built this scraper for. 
 
-**Important: The data on the website has changed during our work, so the links to the annual arms export reports we used do not work anymore.**
-
 ### The Table
 The tables are the basic matrix with the data available. They all look the same: on the left you see the exporting countries Austria and Spain and on the top the importing country Afghanistan, which the table is for. e. g. Austria applied for 3 licenses to Afghanistan in CML 1, which most likely were some Glocks.
 
@@ -95,7 +95,7 @@ The tables are the basic matrix with the data available. They all look the same:
 
 **EU Common Military List categories**
 
-The second row is an EU specific classification of arms, the [EU Common Military List categories]](http://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ%3AC%3A2014%3A107%3AFULL).
+The second row is an EU specific classification of arms, the [EU Common Military List categories](http://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ%3AC%3A2014%3A107%3AFULL).
 
 - ML1: Smooth-bore weapons with a calibre of less than 20 mm, other arms and automatic weapons with a calibre of 12,7 mm (calibre 0,50 inches) or less and accessories, and specially designed components therefor.
 - ML2: Smooth-bore weapons with a calibre of 20 mm or more, other weapons or armament with a calibre greater than 12,7 mm (calibre 0,50 inches), projectors and accessories, and specially designed components therefor.
@@ -135,79 +135,92 @@ In some HTML tables were errors, which were corrected manually after downloading
 ### Soundness
 - "Statistics are compiled differently by each Member State: no uniform standard is used. Consequently, owing to current procedures regarding arms export reporting or data protection legislation, not all countries have been able to submit the same information (3):"
 - "With regard to actual exports authorised by EU Member States (row (c)), it is important to note that Belgium, Denmark, Germany, Poland, Greece, Ireland and the United Kingdom could not provide these data while France and Italy have reported total values only. No aggregation is therefore reported at the EU level."
+- Manual cleaning needed for Moldova, Korea(s), Congo(s), Trinidad And Tobago, San Marino, Countries with names containing „and“ and „of“, Russia/Russian Federation. 
 
 For more corrections of data, look at the specific reports below.
 
 ### 16th Report - 2013  
 [Original HTML](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52015XG0327(05)&rid=1)
 
-**raw data correction**
+**Data Errors**
 
 - Taiwan: "a", "b", "c" were missing in Finland rows
+- "Bosnia and Herzegovina“ => "Bosnia And Herzegovina"
+- "Antigua and Barbuda“ => "Antigua And Barbuda“
 
 ### 15th Report - 2012
 [Original HTML](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52014XG0121(01)&rid=4)
 
-**raw data correction**
+**Data Errors**
 
 - Pakistan: In Total rows:
 	- delete "d"
 	- exchange "e" to "d"
 	- last row gets "e"
+- Kosovo typo error "Kosovo (Under Unscr 1244-99)“ => "Kosovo (under UNSCR/1244/99)“
 
 ### 14th Report - 2011
 [Original HTML](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52012XG1214(01)&rid=7)
 
-**raw data correction**
-No errors.
+**Data Errors**
+- Nicaragua -> Origin country Czech Republic was parsed as "na"
 
 ### 13th Report - 2010
 [Original HTML](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52011XG1230(01)&rid=6)
 
-**raw data correction**
+**Data Errors**
 - India: merged two paragraphs into on in "Total" row
 - Israel: merged two paragraphs into on in "Total" row
 - Syria: merged two paragraphs into on in "Total" row
 - Turkmenistan: merged two paragraphs into on in "Total" row
+- Portugal: typo error CzechRepublic instead of Czech Republic
+- Kosovo: Typo error "Kosovo (Under Unscr 1244-99)“ => "Kosovo (under UNSCR/1244/99)“
+- Destination Country Bulgaria was parsed as „na“ and num-licenses of Denmark, United Kingdom, Netherlands, United Kingdom not parsed.
+- Kosovo typo error "Kosovo (Under Unscr 1244-99)“ => "Kosovo (under UNSCR/1244/99)“
+- Destination Country Norway was parsed as „na“. Exports to Norway seem to be „Total Per ML"
 
 ### 12th Report - 2009
 [Original HTML](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52011XG0113(01)&rid=1)
 
-**raw data correction**
+**Data Errors**
 
 No errors.
 
 ### 11th Report - 2008
 [Original HTML](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52009XG1106(01)&rid=1)
 
-**raw data correction**
+**Data Errors**
 
 No errors.
 
 ### 10th Report - 2007
-**SO FAR, THE SCRAPER DOES NOT WORK FOR THE 1ßth REPORT**
 
 [Original HTML](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52008XG1122(01)&rid=1)
 
-**raw data correction**
+**Data Errors**
 - Kenya: add "a" and "b" Poland rows
+- Israel, Vietnam and Sri Lanka: two paragraphs in e row
 
 ### 9th Report - 2006
-**SO FAR, THE SCRAPER DOES NOT WORK FOR THE 9th REPORT**
 
 [Original HTML](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52007XG1026(01)&rid=1)
 
-**raw data correction**
+**Data Errors**
 
 ### 8th Report - 2005
 [Original HTML](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52005XG1223(03)&rid=1)
 
-**raw data correction**
+**Data Errors**
 - Switzerland: In second table span around country name is missing => ```<span class="bold">SWITZERLAND</span>```
+- Jordan: typo error "Chrypre" instead of "Cyprus"
+- Moldova (Republic Of): typo error "Moldavia" instead of "Moldova (Republic Of)“
+- "Brunei Darussalam“ => „Brunei“
+- „China (Hong Kong)“, China (Macao)“, „China (Mainland)“ => „China“
+- Destination country "Congo (Republic Of)" was parsed as „na“.
 
 ## DATA OUTPUT
 
-**raw html**
+### raw html
 
 ```
 <html>
@@ -254,7 +267,8 @@ No errors.
 
 Because each html report has additional tables in after the ones we want, we have to define a stop country in the [data/raw/csv/list-eu-armsexports-reports.csv](data/raw/csv/list-eu-armsexports-reports.csv)
 
-**arms exports data as JSON**
+### Arms Exports Data as JSON
+
 ```
 {
 	"YEAR" (string) {
@@ -349,6 +363,7 @@ When you are ready, submit a [pull request](https://github.com/OKFNat/armScraper
 We use the [GitHub issue tracker](https://github.com/OKFNat/armScraper/issues) to track bugs and features. Before submitting a bug report or feature request, check to make sure it hasn't already been submitted. When submitting a bug report, please try to provide a screenshot that demonstrates the problem. 
 
 ## COPYRIGHT
+
 All content is openly licensed under the [Creative Commons Attribution 4.0](http://creativecommons.org/licenses/by/4.0/) license, unless otherwisely stated.
 
 All sourcecode is free software: you can redistribute it and/or modify it under the terms of the MIT License.
@@ -360,7 +375,11 @@ Visit [http://opensource.org/licenses/MIT](http://opensource.org/licenses/MIT) t
 
 ## SOURCES
 
-**Arms Exports**
+**Gute Taten für gute Daten**
+- [Gute Taten für gute Daten](http://okfn.at/gutedaten/)
+- [Extracted Data](https://github.com/OKFNat/data/tree/master/waffenexporte)
+
+**European Arms Exports**
 - [SIPRI](http://sipri.org/): Stockholm International Peace Research Institute
 - [Department of Peace and Conflict Research, Uppsala University](http://www.pcr.uu.se/)
 - [Small Arms Survey](http://www.smallarmssurvey.org/)
@@ -368,18 +387,20 @@ Visit [http://opensource.org/licenses/MIT](http://opensource.org/licenses/MIT) t
 - [The Limitations of European Union Reports on Arms Exports: The Case of Central Asia](http://www.nonproliferation.eu/web/documents/other/paulholtomandmarkbromley4e9eaf8345077.pdf): SIPRI, 2010.
 - [The European Union Code of Conduct on Arms Exports: Improving the Annual Report](http://books.sipri.org/files/PP/SIPRIPP08.pdf): Sibylle Bauer and Mark Bromley - SIPRI, 2004.
 - [EU Annual Report](http://www.sipri.org/research/armaments/transfers/transparency/EU_reports): SIPRI page.
+- [Waffenhandel: Das globale Geschäft mit dem Tod](http://www.amazon.de/gp/product/3455502458?psc=1&redirect=true&ref_=oh_aui_detailpage_o01_s00): Andrew Feinstein, 2012. 
 
 **Documentation**
+- Original Data Source: [](), [](), [](), [](), [](), [](), [](), [](), [](), [](), [](), [](), [](), [](), [](), [](), [](), 
 - [Common military list of the European Union (pdf)](http://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ%3AC%3A2014%3A107%3AFULL)
 - [The European Union Code of Conduct on Arms Exports](http://www.consilium.europa.eu/uedocs/cmsUpload/08675r2en8.pdf)
 - [European Union External Action: Arms Export Control](http://www.eeas.europa.eu/non-proliferation-and-disarmament/arms-export-control/index_en.htm)
 
-**Other datasources**
+**Other Data Sources**
 - [SIPRI](http://www.sipri.org/databases)
 - [Armed Conflict Location & Event Data Project](http://www.acleddata.com/)
 - [Uppsala Conflict Data Programm](http://www.pcr.uu.se/research/ucdp/datasets/)
 
-**Media coverage**
+**Media Coverage**
 - [derstandard.at: Wie viele Waffen Österreich an Saudi-Arabien lieferte](http://derstandard.at/2000029272616/Wie-viele-Waffen-Oesterreich-nach-Saudi-Arabien-lieferte)
 - [NZZ.at: Der Arabische Frühling und die europäischen Waffenbauer](https://nzz.at/republik/der-arabische-fruehling-und-die-europaeischen-waffenbauer)
 
@@ -390,6 +411,8 @@ Visit [http://opensource.org/licenses/MIT](http://opensource.org/licenses/MIT) t
 - [LICENSE](LICENSE)
 
 ## CHANGELOG
+See the [whole history](CHANGELOG.md). Next the actual version.
+
 ### Version 0.2 - 2016-04-26
 - update documentation
 - add 2006 and 2007 scraper
