@@ -1,10 +1,13 @@
 EU Arms Exports Scraper
 ==============================
-The scraper extracts information from the EU arms export reports between 2005 and 2013, which is very hard to read for machines. The automatically extracted information is then stored in different data structures (network, country specific) and file formats (CSV, JSON), which are relevant for the next steps, like network analysis, visualization and statistical analysis. 
+The scraper extracts information from the EU arms export reports between 2005 and 2013 and converts it into machine-readable dataformats. The automatically extracted information is stored in different data structures (network, country specific) and file formats (CSV, JSON), which are relevant for further steps, like network analysis, visualization and statistical analysis. 
 
 This repository provides the code and documentation, and [keeps track of bugs as well as feature requests](https://github.com/OKFNat/armScraper/issues).
 
-- [Data Source]()
+- Original Data Source: [2013](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52015XG0327(05)&rid=1), [2012](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52014XG0121(01)&rid=4), [2011](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52012XG1214(01)&rid=7), [2010](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52012XG1214(01)&rid=7)
+, [2009](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52011XG0113(01)&rid=1)
+, [2008](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52009XG1106(01)&rid=1)
+, [2007](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52008XG1122(01)&rid=1), [2006](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52007XG1026(01)&rid=1), [2005](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52005XG1223(03)&rid=1)
 - [Extracted Data](https://github.com/OKFNat/data/tree/master/waffenexporte)
 - Team: [Gute Taten für gute Daten](http://okfn.at/gutedaten/) project of [Open Knowledge Austria](http://okfn.at/).
 - Status: Production
@@ -36,47 +39,78 @@ python arms-scraper.py
 There are two global variables in [arms-scraper.py](code/arms-scraper.py) you may want to change to your needs.
 
 - DELAY_TIME: To not overload the server or may get blocked because of too many request, you should set the delay time to fetch to 1-5 seconds, not less.
-- TS: The timestamp as a string can be set to the last download. So you can use downloaded data over and over again and must not do it everytime. When you do it first time, you can set the value to ```datetime.now().strftime('%Y-%m-%d-%H-%M')```, so it is the timestamp when the scraper starts.
+- TS: The timestamp as a string can be set to the last download. So you can use downloaded data over and over again and must not do it everytime. When you want to download the html, set the value to ```datetime.now().strftime('%Y-%m-%d-%H-%M')```, so it is the timestamp when the scraper starts.
 
 **Download raw html**
 
 Here all the html raw data gets downloaded, stored locally and the basic data gets parsed.
 
-- Download the overview page with the tables (html). For this, the [data/raw/csv/list-eu-armsexports-reports.csv](data/raw/csv/list-eu-armsexports-reports.csv) spreadshit is needed. It's data structure of is needed for the scraper to know where to start from and what to extract.
+Because each html report has additional tables after the ones we want, we have to define a stop country in the [data/raw/csv/list-eu-armsexports-reports.csv](data/raw/csv/list-eu-armsexports-reports.csv)
+
+- Download the overview page with the tables (html). For this, the [data/raw/csv/list-eu-armsexports-reports.csv](data/raw/csv/list-eu-armsexports-reports.csv) spreadsheet is needed. It's data structure of is needed for the scraper to know where to start from and what to extract.
 	- year: year of the arms export report
 	- report-number: number of the arms export report
 	- url: url, where the arms export is located
 	- div-id: ID of the div, where the tables are in.
 	- start-country: first country to extract.
 	- end-country: last country to extract.
-- Open the downloaded file.
-- Parse out the basic information about each lobbying register entry from the overview table. This is necessary here, because the download of the lobbying register entry page needs the link from the Registerzahl field.
-- Store the parsed data as JSON file.
-- Download all lobbying register entry pages (html) with the unique id as postfix.
 
 **Parse html**
 
-Here the description of the project gets added to the data.
-
-- Open the overview page.
-- Parse out the basic information about each lobbying register entry from the overview table. This is necessary here, because the download of the lobbying register entry page needs the link from the Registerzahl field.
-- Open all lobbying register entry pages (html).
-- Parse out the additional information from all lobbying register pages.
-- Store updated data as JSON file.
-
-The lobbying register does not publish the A2 entries, so the scraper never got tested with this and some A2 specific data entries are not part of the parser.
 
 **Export CSV**
 
-Here the data gets exported as a CSV file.
-- Open the data (JSON).
-- Save the serialized data as CSV file.
 
 ## DATA INPUT
 The EU publishes their annual arms exports reports as HTML tables in the web. We have so far found the reports from 2005 to 2013, which we built this scraper for. 
 
+### raw html
+
+```
+<html>
+  <head>
+  <body>
+    .
+    <div id="C_2015103EN.01000601">
+      . 
+      <p id="d1e590-6-1-table" class="ti-tbl">		=> header for table
+      <table class="table">				=> table
+		<colgroup>
+		<tbody>
+		  <tr class="table">				=> row
+		    <td class="table">
+		      <p class="tbl-txt">				=> cell
+		    <td class="table">
+		  .
+		  <tr class="table">
+		    <td class="table">
+		      <p class="tbl-txt">
+		    <td class="table">
+	      <p>
+	      .
+	      <p id="d1e1391-6-1-table" class="ti-tbl">
+	      <table class="table">
+	      <table class="table">				=> table
+		<colgroup>
+		<tbody>
+		  <tr class="table">				=> row
+		    <td class="table">
+		      <p class="tbl-txt">				=> cell
+		    <td class="table">
+		  .
+		  <tr class="table">
+		    <td class="table">
+		      <p class="tbl-txt">
+		    <td class="table">
+	      <p>
+	</div>
+  </body>
+  </head>
+</html>
+```
+
 ### The Table
-The tables are the basic matrix with the data available. They all look the same: on the left you see the exporting countries Austria and Spain and on the top the importing country Afghanistan, which the table is for. e. g. Austria applied for 3 licenses to Afghanistan in CML 1, which most likely were some Glocks.
+The tables are the basic matrix with the data available. They all look the same: on the left you see the exporting countries Austria and Spain and on the top the importing country Afghanistan, which the table is for. e. g. Austria applied for 3 licenses to Afghanistan in CML 1, which most likely were some Glocks. Unfortunately, the htlm-structure is not always the same, so many variations on how to get the country and parse the table needed to be done.
 
 **Example**
 
@@ -220,53 +254,6 @@ No errors.
 
 ## DATA OUTPUT
 
-### raw html
-
-```
-<html>
-  <head>
-  <body>
-    .
-    <div id="C_2015103EN.01000601">
-      . 
-      <p id="d1e590-6-1-table" class="ti-tbl">		=> header for table
-      <table class="table">				=> table
-		<colgroup>
-		<tbody>
-		  <tr class="table">				=> row
-		    <td class="table">
-		      <p class="tbl-txt">				=> cell
-		    <td class="table">
-		  .
-		  <tr class="table">
-		    <td class="table">
-		      <p class="tbl-txt">
-		    <td class="table">
-	      <p>
-	      .
-	      <p id="d1e1391-6-1-table" class="ti-tbl">
-	      <table class="table">
-	      <table class="table">				=> table
-		<colgroup>
-		<tbody>
-		  <tr class="table">				=> row
-		    <td class="table">
-		      <p class="tbl-txt">				=> cell
-		    <td class="table">
-		  .
-		  <tr class="table">
-		    <td class="table">
-		      <p class="tbl-txt">
-		    <td class="table">
-	      <p>
-	</div>
-  </body>
-  </head>
-</html>
-```
-
-Because each html report has additional tables in after the ones we want, we have to define a stop country in the [data/raw/csv/list-eu-armsexports-reports.csv](data/raw/csv/list-eu-armsexports-reports.csv)
-
 ### Arms Exports Data as JSON
 
 ```
@@ -324,7 +311,7 @@ Because each html report has additional tables in after the ones we want, we hav
 }
 ```
 
-**arms export data as CSV**
+### Arms Export data as CSV
 - unique-id
 - year
 - importing-country
@@ -372,12 +359,11 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 Visit [http://opensource.org/licenses/MIT](http://opensource.org/licenses/MIT) to learn more about the MIT License.
 
-
 ## SOURCES
 
 **Gute Taten für gute Daten**
-- [Gute Taten für gute Daten](http://okfn.at/gutedaten/)
-- [Extracted Data](https://github.com/OKFNat/data/tree/master/waffenexporte)
+- [Website](http://okfn.at/gutedaten/)
+- [Data](https://github.com/OKFNat/data/tree/master/waffenexporte): the scraped and cleaned data.
 
 **European Arms Exports**
 - [SIPRI](http://sipri.org/): Stockholm International Peace Research Institute
@@ -390,7 +376,10 @@ Visit [http://opensource.org/licenses/MIT](http://opensource.org/licenses/MIT) t
 - [Waffenhandel: Das globale Geschäft mit dem Tod](http://www.amazon.de/gp/product/3455502458?psc=1&redirect=true&ref_=oh_aui_detailpage_o01_s00): Andrew Feinstein, 2012. 
 
 **Documentation**
-- Original Data Source: [](), [](), [](), [](), [](), [](), [](), [](), [](), [](), [](), [](), [](), [](), [](), [](), [](), 
+- Original Data Source: [2013](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52015XG0327(05)&rid=1), [2012](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52014XG0121(01)&rid=4), [2011](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52012XG1214(01)&rid=7), [2010](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52012XG1214(01)&rid=7)
+, [2009](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52011XG0113(01)&rid=1)
+, [2008](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52009XG1106(01)&rid=1)
+, [2007](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52008XG1122(01)&rid=1), [2006](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52007XG1026(01)&rid=1), [2005](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52005XG1223(03)&rid=1)
 - [Common military list of the European Union (pdf)](http://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ%3AC%3A2014%3A107%3AFULL)
 - [The European Union Code of Conduct on Arms Exports](http://www.consilium.europa.eu/uedocs/cmsUpload/08675r2en8.pdf)
 - [European Union External Action: Arms Export Control](http://www.eeas.europa.eu/non-proliferation-and-disarmament/arms-export-control/index_en.htm)
@@ -407,6 +396,7 @@ Visit [http://opensource.org/licenses/MIT](http://opensource.org/licenses/MIT) t
 ## REPOSITORY
 - [README.md](README.md): Overview of repository
 - [code/arms-scraper.py](code/arms-scraper.py): scraper
+- [data/raw/csv/list-eu-armsexports-reports.csv](data/raw/csv/list-eu-armsexports-reports.csv): CSV file with information for scraper.
 - [CHANGELOG.md](CHANGELOG.md)
 - [LICENSE](LICENSE)
 
